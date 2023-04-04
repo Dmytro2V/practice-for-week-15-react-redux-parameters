@@ -1,23 +1,34 @@
 import "./SingleArticle.css";
-import { articles } from "../ArticleList";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const SingleArticle = (articles) => {
+const SingleArticle = ({ articles1 }) => {
+  //const articles = useSelector((state) => state.articleState.entries);
+  const { id } = useParams();
+  console.log("id", id);
+  console.log("articles1", articles1);
+
+  const articles2 = useSelector((store) => store.articleState.entries);
+  console.log("articles2", articles2);
+
+  // can use here 1 or 2
+  const article = articles1.find((article) => article.id === id);
+
+  // Reloading page  after selected article produces an error
+  // it reloads data twice in curreent config and first time articles is
+  // undefined
+  // so checking on article
+
   return (
-    <route path="/articles/:articleId">
-      <div className="singleArticle">
-        <h1>Why Am I At Home</h1>
-        <img
-          src="https://thumbor.forbes.com/thumbor/960x0/https%3A%2F%2Fblogs-images.forbes.com%2Frobcain%2Ffiles%2F2017%2F10%2FKevin-Home-Alone.jpg"
-          alt="home"
-        />
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex esse
-          laboriosam officia accusantium veritatis fugiat exercitationem vero
-          autem nihil aliquid ullam recusandae, quis odit odio voluptates
-          explicabo nobis! Consequuntur, aliquam?
-        </p>
-      </div>
-    </route>
+    <div className="singleArticle">
+      {article && (
+        <>
+          <h1>{article.title}</h1>
+          <img src={article.imageUrl} alt="home" />
+          <p>{article.body}</p>
+        </>
+      )}
+    </div>
   );
 };
 
